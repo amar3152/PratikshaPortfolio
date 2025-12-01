@@ -5,409 +5,504 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pratiksha Kamble - Software Developer Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind Configuration for Custom Colors and Fonts -->
-    <script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Define a dark, neon-like theme in Tailwind config */
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'primary-indigo': '#4f46e5', // Indigo 600 (Main) - Matching Amar's theme
-                        'accent-green': '#10b981', // Emerald 500 (Accent)
-                        'dark-bg': '#1e293b', // Slate 800/900
-                        'light-bg': '#f8fafc', // Slate 50
+                        'primary-neon': '#8b5cf6', // Violet 500 (Primary accent)
+                        'secondary-neon': '#f97316', // Orange 500 (Secondary accent)
+                        'dark-bg-main': '#121212', // Very dark background
+                        'dark-bg-card': '#1f1f1f', // Slightly lighter for cards
+                        'text-light': '#f3f4f6', // Light gray for primary text
+                        'text-muted': '#a1a1aa', // Zinc 400 for secondary text
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         display: ['Inter', 'sans-serif'],
-                        mono: ['Roboto Mono', 'monospace'],
                     },
                     boxShadow: {
-                        'soft': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
-                        'premium': '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                        'neon': '0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.2)',
+                        'inner-dark': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.1)',
                     }
                 }
             }
         }
-    </script>
+    </style>
+    
     <style>
-        /* Ensuring a smooth scrolling experience */
-        html {
+        /* --- CUSTOM CSS STYLES --- */
+        
+        /* General body style for the dark theme */
+        body {
+            background-color: #121212; /* Match dark-bg-main */
+            color: #f3f4f6; /* Match text-light */
+            font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
         }
+
+        /* Gradient border for cards */
+        .neon-card-border {
+            border-radius: 1rem; /* rounded-xl */
+            position: relative;
+            background: #1f1f1f; /* dark-bg-card */
+            padding: 1px; /* To make the background visible through the border gap */
+        }
+        .neon-card-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            padding: 2px; /* Controls the thickness of the border */
+            background: linear-gradient(135deg, #8b5cf6, #1f1f1f, #f97316); /* Violet to Orange gradient */
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Custom animation for the background on the Hero section */
+        .hero-background {
+            /* Subtle radial gradient for the background glow effect */
+            background-image: radial-gradient(circle at 50% 10%, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+        }
+
+        /* Style for the Skills and Experience tags */
+        .skill-tag {
+            background-color: #3f3f46; /* Zinc 700 */
+            color: #d4d4d8; /* Zinc 300 */
+            font-size: 0.75rem; /* text-xs */
+            padding: 0.25rem 0.75rem; /* px-3 py-1 */
+            border-radius: 9999px; /* rounded-full */
+            transition: background-color 0.2s, color 0.2s;
+            display: inline-block;
+        }
+        .skill-tag:hover {
+            background-color: #8b5cf6; /* primary-neon on hover */
+            color: #121212; /* text-dark on hover */
+        }
         
-        /* Smooth fade for content transition (Experience Panel) */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* TIMELINE SPECIFIC STYLES (Mobile-first, then centered on MD) */
+        .timeline-container {
+            /* On mobile, use padding-left to reserve space for the line/dots */
+            padding-left: 1.5rem; /* ~p-6 on container, p-3 on content, total is 12px dot radius + spacing */
         }
-        .animate-fadeIn {
-            animation: fadeIn 0.3s ease-out forwards;
+        .timeline-line {
+            /* Mobile: Line is on the far left */
+            left: 0.5rem; /* 8px */
+            top: 0;
         }
+        .timeline-dot {
+            /* Mobile: Dot is on the far left */
+            left: 0;
+        }
+
+        @media (min-width: 768px) {
+            /* Desktop/Tablet: Center the line and dots */
+            .timeline-container {
+                padding-left: 0; /* Reset mobile padding */
+            }
+            .timeline-line {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .timeline-dot {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
-
-    <!-- Navigation Bar (Sticky) -->
-    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
+<body class="bg-dark-bg-main text-text-light font-sans">
+    
+    <!-- Navigation Bar (Sticky, Dark Theme) -->
+    <nav class="sticky top-0 z-50 bg-dark-bg-main/95 backdrop-blur-sm border-b border-text-muted/10">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <a href="#hero" class="text-xl font-bold text-slate-900">
+                <a href="#summary" class="text-xl font-bold text-text-light">
                     PRATIKSHA KAMBLE
                 </a>
-                <div class="hidden md:flex space-x-8">
-                    <button onclick="scrollToSection('summary')" class="text-slate-600 hover:text-primary-indigo px-3 py-2 text-sm font-medium transition-colors">Summary</button>
-                    <button onclick="scrollToSection('skills')" class="text-slate-600 hover:text-primary-indigo px-3 py-2 text-sm font-medium transition-colors">Skills</button>
-                    <button onclick="scrollToSection('experience')" class="text-slate-600 hover:text-primary-indigo px-3 py-2 text-sm font-medium transition-colors">Experience</button>
-                    <button onclick="scrollToSection('projects')" class="text-slate-600 hover:text-primary-indigo px-3 py-2 text-sm font-medium transition-colors">Projects</button>
-                    <button onclick="scrollToSection('education')" class="text-slate-600 hover:text-primary-indigo px-3 py-2 text-sm font-medium transition-colors">Education</button>
+                <div class="hidden md:flex space-x-6">
+                    <!-- Desktop Navigation Links -->
+                    <button onclick="scrollToSection('summary')" class="text-text-muted hover:text-primary-neon px-3 py-2 text-sm font-medium transition-colors">Summary</button>
+                    <button onclick="scrollToSection('skills')" class="text-text-muted hover:text-primary-neon px-3 py-2 text-sm font-medium transition-colors">Skills</button>
+                    <button onclick="scrollToSection('experience')" class="text-text-muted hover:text-primary-neon px-3 py-2 text-sm font-medium transition-colors">Experience</button>
+                    <button onclick="scrollToSection('projects')" class="text-text-muted hover:text-primary-neon px-3 py-2 text-sm font-medium transition-colors">Projects</button>
+                    <button onclick="scrollToSection('education')" class="text-text-muted hover:text-primary-neon px-3 py-2 text-sm font-medium transition-colors">Education</button>
+                    <button onclick="scrollToSection('contact')" class="text-text-muted hover:text-primary-neon px-3 py-2 text-sm font-medium transition-colors">Contact</button>
                 </div>
                 <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-slate-600 hover:text-primary-indigo focus:outline-none p-2 rounded-md transition-colors">
+                    <button id="mobile-menu-button" class="text-text-muted hover:text-primary-neon focus:outline-none p-2 rounded-md transition-colors">
+                        <!-- Hamburger Icon -->
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                     </button>
                 </div>
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100">
-            <button onclick="scrollToSection('summary')" class="block w-full text-left px-4 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Summary</button>
-            <button onclick="scrollToSection('skills')" class="block w-full text-left px-4 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Skills</button>
-            <button onclick="scrollToSection('experience')" class="block w-full text-left px-4 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Experience</button>
-            <button onclick="scrollToSection('projects')" class="block w-full text-left px-4 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Projects</button>
-            <button onclick="scrollToSection('education')" class="block w-full text-left px-4 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Education</button>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-bg-main border-t border-text-muted/10">
+            <button onclick="scrollToSection('summary')" class="block w-full text-left px-4 py-2 text-base font-medium text-text-light hover:bg-dark-bg-card">Summary</button>
+            <button onclick="scrollToSection('skills')" class="block w-full text-left px-4 py-2 text-base font-medium text-text-light hover:bg-dark-bg-card">Skills</button>
+            <button onclick="scrollToSection('experience')" class="block w-full text-left px-4 py-2 text-base font-medium text-text-light hover:bg-dark-bg-card">Experience</button>
+            <button onclick="scrollToSection('projects')" class="block w-full text-left px-4 py-2 text-base font-medium text-text-light hover:bg-dark-bg-card">Projects</button>
+            <button onclick="scrollToSection('education')" class="block w-full text-left px-4 py-2 text-base font-medium text-text-light hover:bg-dark-bg-card">Education</button>
+            <button onclick="scrollToSection('contact')" class="block w-full text-left px-4 py-2 text-base font-medium text-text-light hover:bg-dark-bg-card">Contact</button>
         </div>
     </nav>
-
+    
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
-
-        <!-- Hero & Summary Section (Two-Column Layout) -->
-        <section id="summary" class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-            <div class="lg:col-span-2 space-y-6">
-                <div class="inline-block bg-primary-indigo/10 text-primary-indigo text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">SOFTWARE DEVELOPER</div>
-                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-                    Building <span class="text-primary-indigo">Cross-Platform</span> and Scalable Applications
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-28">
+        
+        <!-- Hero & Summary Section -->
+        <section id="summary" class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center hero-background pt-16 pb-24">
+            <div class="lg:col-span-2 space-y-6 order-2 lg:order-1">
+                <div class="text-lg font-extrabold text-text-light uppercase tracking-widest">Hi, I am Pratiksha Kamble</div>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-text-light tracking-tight">
+                    I am an <span id="typing-text" class="text-primary-neon"></span>.
                 </h1>
-                <p class="text-lg text-slate-600 leading-relaxed max-w-2xl">
-                    I am a Full-stack **Java** and **App Developer** with expertise in **React Native**, focusing on robust backend systems and intuitive frontend interfaces. My skills span mobile app development, data management, and optimization.
+                <p class="text-lg text-text-muted leading-relaxed max-w-2xl">
+                    I am a Full-stack <b>Java</b> and <b>App Developer</b> with expertise in <b>React Native</b>, focusing on robust backend systems and intuitive frontend interfaces. I specialize in the <b>Java fullstack</b> and modern technologies to create seamless user experiences and efficient solutions.
                 </p>
-                <div class="flex flex-wrap gap-4 pt-4">
-                    <a href="mailto:kamblepratiksha2810@gmailcom" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-indigo hover:bg-primary-indigo/90 transition-colors">
-                        ✉ Email Me
-                    </a>
-                    <a href="https://linkedin.com/in/pratishkakamble" target="_blank" class="inline-flex items-center px-6 py-3 border border-slate-300 text-base font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 transition-colors">
-                        in LinkedIn
-                    </a>
-                </div>
-                <div class="text-sm text-slate-500 pt-2">
-                    📞 +91 9359835064
-                </div>
             </div>
             
-            <!-- Key Highlights Card (Matching Reference Style) -->
-            <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 lg:col-span-1 transform hover:-translate-y-1 transition-transform duration-300">
-                <h3 class="text-lg font-bold text-slate-900 mb-6 border-b border-slate-100 pb-2">Key Highlights</h3>
-                <ul class="space-y-4">
-                    <li class="flex items-start">
-                        <span class="text-primary-indigo mr-3 text-xl">📱</span>
-                        <div>
-                            <span class="block font-semibold text-slate-800">React Native Expert</span>
-                            <span class="text-sm text-slate-500">Cross-Platform App Development</span>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-accent-green mr-3 text-xl">☕</span>
-                        <div>
-                            <span class="block font-semibold text-slate-800">Java/Full Stack Ready</span>
-                            <span class="text-sm text-slate-500">Backend & API Proficiency</span>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-orange-500 mr-3 text-xl">☁</span>
-                        <div>
-                            <span class="block font-semibold text-slate-800">Data Workflow Optimized</span>
-                            <span class="text-sm text-slate-500">Talend, SQL, pgAdmin</span>
-                        </div>
-                    </li>
-                </ul>
+            <!-- Profile Image Placeholder -->
+            <div class="lg:col-span-1 flex justify-center order-1 lg:order-2">
+                <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-primary-neon to-secondary-neon p-1 shadow-neon">
+                    <div class="w-full h-full bg-gray-600 rounded-full flex items-center justify-center text-4xl font-bold text-white overflow-hidden">
+                        <!-- Reliable placeholder image -->
+                        <img 
+                            src="PK.png" 
+                            alt="Pratiksha Kamble Profile Picture" 
+                            class="w-full h-full object-cover rounded-full" 
+                        >
+                    </div>
+                </div>
             </div>
         </section>
-
-        <!-- Skills Section (Simplified Card Layout) -->
+        
+        <!-- Skills Section -->
         <section id="skills">
-            <h2 class="text-3xl font-bold text-slate-900 text-center mb-10">Technical Mastery</h2>
+            <h2 class="text-4xl font-bold text-text-light text-center mb-16">SKILLS</h2>
+            <p class="text-text-muted mt-2 max-w-3xl mx-auto text-center mb-10">A collection of my technical skills and expertise honed through various projects and experiences.</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Frontend -->
+                <div class="bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border hover:shadow-neon/20 transition-shadow">
+                    <h3 class="text-xl font-bold text-primary-neon mb-5">Frontend</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag">React Native</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Tailwind CSS</span>
+                        <span class="skill-tag">Bootstrap</span>
+                        <span class="skill-tag">HTML</span>
+                        <span class="skill-tag">CSS</span>
+                    </div>
+                </div>
+                <!-- Backend/Frameworks -->
+                <div class="bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border hover:shadow-neon/20 transition-shadow">
+                    <h3 class="text-xl font-bold text-secondary-neon mb-5">Backend / Frameworks</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Node.js (Basic)</span>
+                        <span class="skill-tag">Express.js (Basic)</span>
+                        <span class="skill-tag">Spring Boot (Learning)</span>
+                    </div>
+                </div>
                 <!-- Languages -->
-                <div class="bg-white p-6 rounded-2xl shadow-soft border-t-4 border-primary-indigo">
-                    <h3 class="text-xl font-bold text-dark-bg mb-4">Languages</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-primary-indigo/10 text-primary-indigo text-xs rounded-full">Java</span>
-                        <span class="px-3 py-1 bg-primary-indigo/10 text-primary-indigo text-xs rounded-full">Python</span>
-                        <span class="px-3 py-1 bg-primary-indigo/10 text-primary-indigo text-xs rounded-full">Javascript</span>
-                        <span class="px-3 py-1 bg-primary-indigo/10 text-primary-indigo text-xs rounded-full">Typescript</span>
-                        <span class="px-3 py-1 bg-primary-indigo/10 text-primary-indigo text-xs rounded-full">HTML</span>
+                <div class="bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border hover:shadow-neon/20 transition-shadow">
+                    <h3 class="text-xl font-bold text-green-400 mb-5">Languages</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Javascript</span>
+                        <span class="skill-tag">Typescript</span>
+                        <span class="skill-tag">Python (Basic)</span>
+                        <span class="skill-tag">C / C++ (Basic)</span>
                     </div>
                 </div>
-
-                <!-- Frameworks & Technology -->
-                <div class="bg-white p-6 rounded-2xl shadow-soft border-t-4 border-accent-green">
-                    <h3 class="text-xl font-bold text-dark-bg mb-4">Frameworks & Frontend</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-accent-green/10 text-accent-green text-xs rounded-full">React Native</span>
-                        <span class="px-3 py-1 bg-accent-green/10 text-accent-green text-xs rounded-full">React</span>
-                        <span class="px-3 py-1 bg-accent-green/10 text-accent-green text-xs rounded-full">Tailwind</span>
-                        <span class="px-3 py-1 bg-accent-green/10 text-accent-green text-xs rounded-full">Bootstrap</span>
-                    </div>
-                </div>
-
                 <!-- Tools & Databases -->
-                <div class="bg-white p-6 rounded-2xl shadow-soft border-t-4 border-purple-500">
-                    <h3 class="text-xl font-bold text-dark-bg mb-4">Tools & Data</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-purple-500/10 text-purple-600 text-xs rounded-full">MySQL</span>
-                        <span class="px-3 py-1 bg-purple-500/10 text-purple-600 text-xs rounded-full">Firebase</span>
-                        <span class="px-3 py-1 bg-purple-500/10 text-purple-600 text-xs rounded-full">Figma</span>
-                        <span class="px-3 py-1 bg-purple-500/10 text-purple-600 text-xs rounded-full">Talend Open Studio</span>
-                        <span class="px-3 py-1 bg-purple-500/10 text-purple-600 text-xs rounded-full">Git/GitHub</span>
+                <div class="bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border hover:shadow-neon/20 transition-shadow">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-5">Tools & Data</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">Firebase</span>
+                        <span class="skill-tag">Talend Open Studio</span>
+                        <span class="skill-tag">Git/GitHub</span>
+                        <span class="skill-tag">Figma</span>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Experience Interactive Section (Tabbed Layout) -->
+        
+        <!-- --- Divider --- -->
+        <hr class="border-t border-text-muted/10 max-w-lg mx-auto">
+        
+        <!-- Experience Section (Refactored for Responsiveness) -->
         <section id="experience">
-            <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">Professional Journey</h2>
-            <p class="text-slate-600 mt-2 max-w-3xl mx-auto text-center mb-10">
-                My career path involves hands-on development, delivering solutions across app development and data warehousing. Select a role below to view details.
-            </p>
-
-            <div class="flex flex-col md:flex-row gap-8">
-                <!-- Tabs/Timeline List -->
-                <div class="md:w-1/3 flex flex-col space-y-2" id="exp-tabs">
-                    <!-- Tabs will be dynamically injected by JS -->
-                </div>
-
-                <!-- Detail Panel -->
-                <div class="md:w-2/3 bg-white rounded-2xl p-8 shadow-md border border-slate-100 min-h-[300px] flex flex-col justify-center relative transition-all duration-300" id="exp-detail-panel">
-                    <div id="exp-content" class="opacity-100 transition-opacity duration-300">
-                        <!-- Content injected by JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Grid Section (Matching Reference Style) -->
-        <section id="projects">
-            <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">Project Ecosystem</h2>
-            <p class="text-slate-600 mt-2 max-w-3xl mx-auto text-center mb-10">
-                A showcase of applications demonstrating full-stack and mobile capabilities.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
-                <!-- Cards injected by JS -->
-            </div>
-        </section>
-
-        <!-- Education & Certifications -->
-        <section id="education" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <h2 class="text-4xl font-bold text-text-light mb-16 text-center">EXPERIENCE</h2>
+            <p class="text-text-muted mt-2 max-w-3xl mx-auto text-center mb-10">A collection of my work experience and the roles I have taken in various organizations.</p>
             
-            <!-- Education Column -->
-            <div>
-                <h2 class="text-3xl font-bold text-slate-900 mb-6 flex items-center">
-                    <span class="bg-primary-indigo/10 text-primary-indigo p-2 rounded-lg mr-3 text-sm">🎓</span> 
-                    Education
-                </h2>
-                <div class="space-y-6">
-                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:border-primary-indigo/50 transition-colors">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-bold text-slate-900">BTech, Computer Science & Engineering</h3>
-                            <span class="text-xs font-mono bg-slate-100 text-slate-600 px-2 py-1 rounded">2024</span>
+            <!-- Vertical Timeline Container -->
+            <div class="relative max-w-3xl mx-auto timeline-container">
+                <!-- Vertical Line -->
+                <div class="absolute timeline-line h-full w-0.5 bg-text-muted/20 z-0"></div> 
+                
+                <div class="space-y-16">
+                    
+                    <!-- Experience 1: App Development Intern (Right side on Desktop) -->
+                    <div class="flex flex-col md:flex-row md:items-center relative md:justify-end">
+                        <div class="md:w-1/2 md:pr-10 md:text-right order-2 md:order-1">
+                            <h3 class="text-2xl font-bold text-primary-neon mb-1">App Development Intern</h3>
+                            <p class="text-md font-medium text-text-light">Startup Company</p>
+                            <p class="text-sm text-text-muted">July 2024 – July 2025</p>
                         </div>
-                        <p class="text-primary-indigo text-sm font-medium mt-1">Karmaveer Bhaurao Patil College Of Engineering</p>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:border-primary-indigo/50 transition-colors">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-bold text-slate-900">Diploma, Computer Engineering</h3>
-                            <span class="text-xs font-mono bg-slate-100 text-slate-600 px-2 py-1 rounded">2021</span>
-                        </div>
-                        <p class="text-primary-indigo text-sm font-medium mt-1">Karmaveer Bhaurao Patil Polytechnic</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Certifications Column -->
-            <div>
-                <h2 class="text-3xl font-bold text-slate-900 mb-6 flex items-center">
-                    <span class="bg-accent-green/10 text-accent-green p-2 rounded-lg mr-3 text-sm">🏆</span> 
-                    Certifications & Awards
-                </h2>
-                <div class="space-y-4">
-                    <div class="flex items-center p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-                        <div class="h-10 w-10 bg-primary-indigo/10 rounded-full flex items-center justify-center text-primary-indigo font-bold mr-4">FS</div>
-                        <div>
-                            <h4 class="font-bold text-slate-900">Java Full Stack Development</h4>
-                            <p class="text-xs text-slate-500">EduBridge, Capgemini (2023 - 2024)</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-                        <div class="h-10 w-10 bg-accent-green/10 rounded-full flex items-center justify-center text-accent-green font-bold mr-4">CD</div>
-                        <div>
-                            <h4 class="font-bold text-slate-900">CDAC ACC-HPC Training</h4>
-                            <p class="text-xs text-slate-500">High Performance Computing (2025)</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-                        <div class="h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 font-bold mr-4">ST</div>
-                        <div>
-                            <h4 class="font-bold text-slate-900">Shark Tank KBP (2nd Rank)</h4>
-                            <p class="text-xs text-slate-500">Entrepreneurship Competition</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="text-center text-slate-500 text-sm py-12 border-t border-slate-200">
-            <p>&copy; 2025 Pratiksha Kamble.</p>
-        </footer>
-
-    </main>
-
-    <script>
-        // --- Data Store (Modified for Pratiksha's resume) ---
-        const experienceData = [
-            {
-                id: 1,
-                role: "App Development Intern",
-                company: "Startup Company",
-                period: "July 2024 – July 2025",
-                summary: "Lead mobile application development, focusing on user-centric design and implementing cross-platform functionality.",
-                highlights: [
-                    "Designed the app user interface using **Figma**, emphasizing intuitive user experience.",
-                    "Built the full Android application using **React Native (Frontend)**.",
-                    "Managed the backend infrastructure and authentication using **Firebase**."
-                ],
-                tech: ["React Native", "Firebase", "Figma", "Android"]
-            },
-            {
-                id: 2,
-                role: "Software Development Intern",
-                company: "Sarvatra Technologies Pvt. Ltd",
-                period: "Feb 2024 – June 2024",
-                summary: "Focused on data warehousing, financial transaction handling, and process optimization.",
-                highlights: [
-                    "Optimized data migration workflows using **Talend Open Studio**.",
-                    "Wrote complex **SQL queries** and managed databases using **pgAdmin**.",
-                    "Converted Onus, Issuer, and Acquirer financial transaction reports."
-                ],
-                tech: ["Java", "SQL", "Talend Open Studio", "pgAdmin", "Data Warehousing"]
-            }
-        ];
-
-        const projectsData = [
-            {
-                title: "Student Contact Management System",
-                subtitle: "Secure Web Application",
-                desc: "A Java/MySQL web application for securely managing and maintaining student records.",
-                features: ["CRUD Functionality", "Admin Security", "Java Backend", "MySQL DB"],
-                stack: "Java, MySQL, HTML",
-                color: "primary-indigo"
-            },
-            {
-                title: "CSE Voting Application",
-                subtitle: "Secure Android App",
-                desc: "An Android application built in Java to simplify and secure the voting process for students.",
-                features: ["Registration/Voting", "Result Display", "Vote Security", "Java (Android)"],
-                stack: "Java, Android",
-                color: "accent-green"
-            }
-        ];
-
-        // --- Experience Interaction (Tabbed Layout Logic) ---
-        let currentExpId = 1;
-
-        function renderExperience() {
-            const tabContainer = document.getElementById('exp-tabs');
-            const contentContainer = document.getElementById('exp-content');
-            
-            // Render Tabs
-            tabContainer.innerHTML = experienceData.map(exp => `
-                <button onclick="switchExperience(${exp.id})" 
-                    class="text-left px-6 py-3 rounded-md transition-all duration-200 border-l-4 ${currentExpId === exp.id ? 'bg-white shadow-sm border-primary-indigo text-primary-indigo' : 'bg-transparent border-transparent hover:bg-slate-100/70 text-slate-700'}">
-                    <h4 class="font-bold text-slate-900">${exp.role}</h4>
-                    <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wide">${exp.company}</p>
-                </button>
-            `).join('');
-
-            // Render Content
-            const activeExp = experienceData.find(e => e.id === currentExpId);
-            contentContainer.innerHTML = `
-                <div class="animate-fadeIn">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-900">${activeExp.role}</h3>
-                            <p class="text-md text-primary-indigo font-medium">${activeExp.company}</p>
-                        </div>
-                        <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-mono">${activeExp.period}</span>
-                    </div>
-                    <p class="text-slate-600 mb-5 leading-relaxed">${activeExp.summary}</p>
-                    <ul class="space-y-2 mb-5">
-                        ${activeExp.highlights.map(h => `<li class="flex items-start"><span class="text-primary-indigo mr-2 text-sm">›</span> <span class="text-slate-700 text-sm">${h}</span></li>`).join('')}
-                    </ul>
-                    <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
-                        ${activeExp.tech.map(t => `<span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded border border-slate-200">${t}</span>`).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function switchExperience(id) {
-            const panel = document.getElementById('exp-content');
-            panel.style.opacity = '0';
-            setTimeout(() => {
-                currentExpId = id;
-                renderExperience();
-                panel.style.opacity = '1';
-            }, 200);
-        }
-
-        // --- Projects Rendering (Matching Reference Style) ---
-        function renderProjects() {
-            const grid = document.getElementById('projects-grid');
-            grid.innerHTML = projectsData.map(proj => `
-                <div class="group bg-white rounded-xl shadow-soft border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <div class="p-6 flex-grow">
-                        <div class="flex justify-between items-start mb-3">
-                            <h3 class="text-xl font-bold text-slate-900 group-hover:text-primary-indigo transition-colors">${proj.title}</h3>
-                            <span class="text-xs font-bold px-2 py-1 rounded bg-${proj.color}/10 text-${proj.color} uppercase">${proj.stack.split(',')[0]}</span>
-                        </div>
-                        <p class="text-sm text-slate-500 font-medium mb-3">${proj.subtitle}</p>
-                        <p class="text-slate-600 text-sm leading-relaxed mb-4">${proj.desc}</p>
                         
-                        <div class="space-y-1 mt-4">
-                            ${proj.features.map(f => `
-                                <div class="flex items-center text-xs text-slate-700">
-                                    <span class="text-${proj.color} mr-2">✓</span> ${f}
-                                </div>
-                            `).join('')}
+                        <!-- Timeline Dot (Responsive Positioning) -->
+                        <div class="absolute timeline-dot w-4 h-4 rounded-full bg-primary-neon shadow-neon z-10 top-0 md:top-1/2 md:-translate-y-1/2"></div>
+                        
+                        <div class="bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border md:w-1/2 md:pl-10 mt-4 md:mt-0 order-1 md:order-2">
+                            <p class="text-text-light mb-4">Lead mobile application development, focusing on user-centric design and implementing cross-platform functionality.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">React Native</span>
+                                <span class="skill-tag">Firebase</span>
+                                <span class="skill-tag">Figma</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 2: Software Development Intern (Left side on Desktop) -->
+                    <div class="flex flex-col md:flex-row-reverse md:items-center relative md:justify-end">
+                        <div class="md:w-1/2 md:pl-10 md:text-left order-2 md:order-1">
+                            <h3 class="text-2xl font-bold text-secondary-neon mb-1">Software Development Intern</h3>
+                            <p class="text-md font-medium text-text-light">Sarvatra Technologies Pvt. Ltd</p>
+                            <p class="text-sm text-text-muted">Feb 2024 – June 2024</p>
+                        </div>
+                        
+                        <!-- Timeline Dot (Responsive Positioning) -->
+                        <div class="absolute timeline-dot w-4 h-4 rounded-full bg-secondary-neon shadow-neon z-10 top-0 md:top-1/2 md:-translate-y-1/2"></div>
+                        
+                        <div class="bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border md:w-1/2 md:pr-10 mt-4 md:mt-0 order-1 md:order-2">
+                            <p class="text-text-light mb-4">Focused on data warehousing, financial transaction handling, and process optimization.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Java</span>
+                                <span class="skill-tag">Talend Open Studio</span>
+                                <span class="skill-tag">SQL</span>
+                            </div>
                         </div>
                     </div>
                     
                 </div>
-            `).join('');
-        }
-
-        // --- Utilities ---
+            </div>
+        </section>
+        
+        <!-- --- Divider --- -->
+        <hr class="border-t border-text-muted/10 max-w-lg mx-auto">
+        
+        <!-- Projects Grid Section -->
+        <section id="projects">
+            <h2 class="text-4xl font-bold text-text-light mb-16 text-center">PROJECTS</h2>
+            <p class="text-text-muted mt-2 max-w-3xl mx-auto text-center mb-10">A showcase of applications demonstrating full-stack and mobile capabilities.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                
+                <!-- Project Card 1 -->
+                <div class="bg-dark-bg-card p-1 rounded-xl shadow-lg hover:shadow-neon transition-all duration-300">
+                    <div class="h-40 bg-gray-800 rounded-t-xl flex items-center justify-center text-text-muted text-sm border-b border-text-muted/10 overflow-hidden">
+                        <!-- Placeholder for Student Management System -->
+                        <img src="student.png" 
+                             alt="Student Management System Mockup" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-neon mb-2">Student Contact Management System</h3>
+                        <p class="text-sm text-text-muted font-medium mb-3">Secure Web Application</p>
+                        <p class="text-text-light text-sm leading-relaxed mb-4">A Java/MySQL web application for securely managing and maintaining student records.</p>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-text-muted/10">
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">MySQL</span>
+                            <span class="skill-tag">HTML</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project Card 2 -->
+                <div class="bg-dark-bg-card p-1 rounded-xl shadow-lg hover:shadow-neon transition-all duration-300">
+                    <div class="h-40 bg-gray-800 rounded-t-xl flex items-center justify-center text-text-muted text-sm border-b border-text-muted/10 overflow-hidden">
+                         <!-- Placeholder for Voting App -->
+                         <img src="vote.png" 
+                              alt="CSE Voting Application Mockup" 
+                              class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-secondary-neon mb-2">CSE Voting Application</h3>
+                        <p class="text-sm text-text-muted font-medium mb-3">Secure Android App</p>
+                        <p class="text-text-light text-sm leading-relaxed mb-4">An Android application built in Java to simplify and secure the voting process for students.</p>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-text-muted/10">
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">Android</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project Card 3 (Placeholder for 3rd column filling) -->
+                <div class="bg-dark-bg-card p-1 rounded-xl shadow-lg hover:shadow-neon transition-all duration-300">
+                    <div class="h-40 bg-gray-800 rounded-t-xl flex items-center justify-center text-text-muted text-sm border-b border-text-muted/10 overflow-hidden">
+                         <!-- Placeholder for E-commerce UI -->
+                         <img src="ecommerce.png" 
+                              alt="E-Commerce Mobile UI Mockup" 
+                              class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-neon mb-2">E-Commerce Mobile UI</h3>
+                        <p class="text-sm text-text-muted font-medium mb-3">React Native Frontend Project</p>
+                        <p class="text-text-light text-sm leading-relaxed mb-4">A visually appealing and responsive mobile UI design for a modern e-commerce platform.</p>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-text-muted/10">
+                            <span class="skill-tag">React Native</span>
+                            <span class="skill-tag">UI/UX</span>
+                            <span class="skill-tag">Redux (Mock)</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- --- Divider --- -->
+        <hr class="border-t border-text-muted/10 max-w-lg mx-auto">
+        
+        <!-- Education & Certifications (Refactored for Responsiveness) -->
+        <section id="education">
+            <h2 class="text-4xl font-bold text-text-light mb-16 text-center">EDUCATION</h2>
+            <p class="text-text-muted mt-2 max-w-3xl mx-auto text-center mb-10">My education has been a journey of learning and development. Here are the details of my academic background.</p>
+            
+            <div class="relative max-w-xl mx-auto timeline-container">
+                <!-- Vertical Line -->
+                <div class="absolute timeline-line h-full w-0.5 bg-text-muted/20 z-0"></div>
+                
+                <!-- Education Entry 1: BTech (Right side on Desktop) -->
+                <div class="flex flex-col md:flex-row md:items-center w-full mb-12 relative md:justify-end">
+                    <div class="md:w-1/2 md:pr-4 md:text-right order-2 md:order-1">
+                        <p class="text-sm text-text-muted">Graduation: 2024</p>
+                    </div>
+                    
+                    <!-- Timeline Dot -->
+                    <div class="absolute timeline-dot w-4 h-4 rounded-full bg-primary-neon shadow-neon z-10 top-0 md:top-1/2 md:-translate-y-1/2"></div>
+                    
+                    <div class="md:w-1/2 md:pl-4 bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border mt-4 md:mt-0 order-1 md:order-2">
+                        <h3 class="font-bold text-text-light text-lg">BTech, Computer Science & Engineering</h3>
+                        <p class="text-primary-neon text-sm mt-1">Karmaveer Bhaurao Patil College Of Engineering</p>
+                    </div>
+                </div>
+                
+                <!-- Education Entry 2: Diploma (Left side on Desktop) -->
+                <div class="flex flex-col md:flex-row-reverse md:items-center w-full mb-12 relative md:justify-end">
+                    <div class="md:w-1/2 md:pl-4 md:text-left order-2 md:order-1">
+                        <p class="text-sm text-text-muted">Graduation: 2021</p>
+                    </div>
+                    
+                    <!-- Timeline Dot -->
+                    <div class="absolute timeline-dot w-4 h-4 rounded-full bg-secondary-neon shadow-neon z-10 top-0 md:top-1/2 md:-translate-y-1/2"></div>
+                    
+                    <div class="md:w-1/2 md:pr-4 bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border text-right mt-4 md:mt-0 order-1 md:order-2">
+                        <h3 class="font-bold text-text-light text-lg">Diploma, Computer Engineering</h3>
+                        <p class="text-secondary-neon text-sm mt-1">Karmaveer Bhaurao Patil Polytechnic</p>
+                    </div>
+                </div>
+                
+                <!-- Certification 1: Java Full Stack (Right side on Desktop) -->
+                <div class="flex flex-col md:flex-row md:items-center w-full mb-12 relative md:justify-end">
+                    <div class="md:w-1/2 md:pr-4 md:text-right order-2 md:order-1">
+                        <p class="text-sm text-text-muted">2023 - 2024</p>
+                    </div>
+                    
+                    <!-- Timeline Dot -->
+                    <div class="absolute timeline-dot w-4 h-4 rounded-full bg-green-400 shadow-neon z-10 top-0 md:top-1/2 md:-translate-y-1/2"></div>
+                    
+                    <div class="md:w-1/2 md:pl-4 bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border mt-4 md:mt-0 order-1 md:order-2">
+                        <h3 class="font-bold text-text-light text-lg">Java Full Stack Development</h3>
+                        <p class="text-green-400 text-sm mt-1">EduBridge, Capgemini</p>
+                    </div>
+                </div>
+                
+                <!-- Certification 2: CDAC (Left side on Desktop) -->
+                <div class="flex flex-col md:flex-row-reverse md:items-center w-full relative md:justify-end">
+                    <div class="md:w-1/2 md:pl-4 md:text-left order-2 md:order-1">
+                        <p class="text-sm text-text-muted">2025</p>
+                    </div>
+                    
+                    <!-- Timeline Dot -->
+                    <div class="absolute timeline-dot w-4 h-4 rounded-full bg-orange-400 shadow-neon z-10 top-0 md:top-1/2 md:-translate-y-1/2"></div>
+                    
+                    <div class="md:w-1/2 md:pr-4 bg-dark-bg-card p-6 rounded-xl shadow-inner-dark neon-card-border text-right mt-4 md:mt-0 order-1 md:order-2">
+                        <h3 class="font-bold text-text-light text-lg">CDAC ACC-HPC Training</h3>
+                        <p class="text-primary-neon text-sm mt-1">High Performance Computing (2025)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- --- Divider --- -->
+        <hr class="border-t border-text-muted/10 max-w-lg mx-auto">
+        
+        <!-- Contact Section -->
+        <section id="contact" class="pb-16">
+            <h2 class="text-4xl font-bold text-text-light mb-16 text-center">CONTACT</h2>
+            <p class="text-text-muted mt-2 max-w-3xl mx-auto text-center mb-10">I'd love to hear from you—reach out for any opportunities or questions!</p>
+            
+            <div class="max-w-md mx-auto bg-dark-bg-card p-8 rounded-xl shadow-xl border border-text-muted/10">
+                <form class="space-y-6">
+                    <input type="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-dark-bg-main text-text-light border border-text-muted/20 focus:border-primary-neon focus:ring-1 focus:ring-primary-neon transition-colors" required>
+                    <input type="text" placeholder="Your Name" class="w-full p-3 rounded-lg bg-dark-bg-main text-text-light border border-text-muted/20 focus:border-primary-neon focus:ring-1 focus:ring-primary-neon transition-colors" required>
+                    <input type="text" placeholder="Subject" class="w-full p-3 rounded-lg bg-dark-bg-main text-text-light border border-text-muted/20 focus:border-primary-neon focus:ring-1 focus:ring-primary-neon transition-colors">
+                    <textarea placeholder="Message" rows="4" class="w-full p-3 rounded-lg bg-dark-bg-main text-text-light border border-text-muted/20 focus:border-primary-neon focus:ring-1 focus:ring-primary-neon transition-colors" required></textarea>
+                    
+                    <!-- Gradient Send Button -->
+                    <button type="submit" class="w-full p-3 font-semibold rounded-lg text-white bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 transition-all shadow-lg shadow-purple-600/30 transform hover:scale-[1.01]">
+                        Send
+                    </button>
+                </form>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="text-center text-text-muted text-sm py-8 border-t border-text-muted/10">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://linkedin.com/in/pratishkakamble" target="_blank" class="text-text-muted hover:text-primary-neon transition-colors">
+                    <!-- LinkedIn Icon (Using inline SVG for reliability) -->
+                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.481c0-1.305-.022-2.982-1.812-2.982-1.814 0-2.094 1.416-2.094 2.876v5.587H9.109V9.167h3.414v1.572h.046c.477-.903 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.442v6.121zM5.949 7.425c-1.31 0-2.37-1.066-2.37-2.37c0-1.302 1.059-2.368 2.37-2.368s2.37 1.066 2.37 2.368c0 1.304-1.06 2.37-2.37 2.37zm1.88-1.572H4.072V20.45h3.757V5.853zM22.225 1H1.772C1.34 1 1 1.34 1 1.772v20.453C1 22.66 1.34 23 1.772 23h20.453c.433 0 .774-.34.774-.772V1.772C23 1.34 22.657 1 22.225 1z"></path></svg>
+                </a>
+                
+            </div>
+            <p>&copy; 2025 Pratiksha Kamble. All rights reserved.</p>
+        </footer>
+        
+    </main>
+    
+    <script>
+        // --- JAVASCRIPT LOGIC ---
+        
+        /**
+         * Scrolls smoothly to the target section, accounting for the fixed navigation bar height.
+         * @param {string} id - The ID of the section element to scroll to.
+         */
         function scrollToSection(id) {
             const element = document.getElementById(id);
-            const navHeight = 80; 
+            // Height of the sticky navigation bar (h-16 is 64px)
+            const navHeight = 64;
+            
+            if (!element) return;
+            
+            // Calculate the position to scroll to
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-        
+            
             window.scrollTo({
                 top: offsetPosition,
                 behavior: "smooth"
@@ -419,19 +514,70 @@
                 mobileMenu.classList.add('hidden');
             }
         }
-
-        // --- Initialization ---
+        
         document.addEventListener('DOMContentLoaded', () => {
-            renderExperience();
-            renderProjects();
-
-            // Mobile menu toggle
-            document.getElementById('mobile-menu-button').addEventListener('click', () => {
-                const menu = document.getElementById('mobile-menu');
-                menu.classList.toggle('hidden');
-            });
+            // Mobile menu toggle logic
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // --- Typing Effect Functionality ---
+            const typingTextElement = document.getElementById('typing-text');
+            
+            if (typingTextElement) {
+                // Define the words to cycle through
+                const words = ["App Developer", "Java Developer", "Full-stack Developer", "Software Developer"];
+                
+                let wordIndex = 0;
+                let charIndex = 0;
+                let isDeleting = false;
+                
+                const typingSpeed = 100; // Time in ms for typing a character
+                const deletingSpeed = 50; // Time in ms for deleting a character
+                const pauseTime = 1500; // Time in ms to pause before deleting or next word
+                
+                function type() {
+                    const currentWord = words[wordIndex];
+                    
+                    if (isDeleting) {
+                        // Deleting phase
+                        typingTextElement.textContent = currentWord.substring(0, charIndex - 1);
+                        charIndex--;
+                    } else {
+                        // Typing phase
+                        typingTextElement.textContent = currentWord.substring(0, charIndex + 1);
+                        charIndex++;
+                    }
+                    
+                    let currentSpeed = isDeleting ? deletingSpeed : typingSpeed;
+                    
+                    // Check if word is fully typed
+                    if (!isDeleting && charIndex === currentWord.length) {
+                        // Pause at the end of the word, then start deleting
+                        currentSpeed = pauseTime;
+                        isDeleting = true;
+                    }
+                    // Check if word is fully deleted
+                    else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        // Move to the next word in the array
+                        wordIndex = (wordIndex + 1) % words.length;
+                        // Pause slightly before typing the next word
+                        currentSpeed = 500;
+                    }
+                    
+                    setTimeout(type, currentSpeed);
+                }
+                
+                // Start the animation
+                type();
+            }
         });
-
     </script>
 </body>
 </html>
